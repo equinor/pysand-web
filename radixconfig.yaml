@@ -1,0 +1,24 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: pysandweb
+spec:
+  build:
+    secrets:
+      - SECRET_1
+      - SECRET_2
+  environments:
+    - name: dev
+      build:
+        from: master
+    - name: prod
+  components:
+    - name: main
+      src: "."
+      publicPort: http
+      ports:
+       - name: http
+         port: 8000
+  dnsAppAlias:
+    environment: dev
+    component: main

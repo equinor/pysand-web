@@ -1,0 +1,9 @@
+###### Requirements ######
+pandas
+numpy >= 1.17
+scipy
+pysand
+flask
+bootstrap-flask
+wtforms
+Flask-WTF

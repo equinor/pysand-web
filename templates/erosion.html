@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_field, render_hidden_errors %}
+
+{% block styles %}
+{{ super() }}
+	<style>
+		body { background: #e8f1f9; }
+	</style>
+{% endblock styles%}
+
+
+{% block title %}
+Erosion Calculator
+{% endblock title%}
+
+
+{% block content %}
+
+<form class="form form-group" method="post" role="form">
+	{{ form.hidden_tag() }}
+	{{ render_hidden_errors(form) }}
+
+<div class="container">
+
+  	<div class="row">
+		<div class="col-md-12 col-lg-12 mx-lg-auto mx-md-auto">
+			<center><img src="https://github.com/equinor/pysand/blob/master/resources/logo.png?raw=true" alt="pySand"><p class="text-muted">pySand version: {{ pysand_version }}</p></center>
+			<h2 class="pt-5 pb-2">Erosion Calculator</h2>
+			<p class="lead">Erosion calculator using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> repository and DNV RP-O501 </p>
+		</div>
+	</div>
+		
+	<div class="row">
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<h4>Geometry and Material</h4>
+			{{ render_field(form.erosion_model, onchange="submit()") }}
+			{{ render_field(form.material) }}
+			{{ render_field(form.internal_diameter) }}
+		</div>
+
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<h4>Particle Input</h4>
+			{{ render_field(form.erosive_agent) }}
+			{{ render_field(form.particle_diameter) }}
+			{{ render_field(form.mass_sand) }}
+		</div>
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<!-- Hide / Unhide erosion model specific input here-->
+			<h4>Specific Input</h4>
+			{% if erosion_model=='bend' %}
+				{{ render_field(form.R) }}
+				{{ render_field(form.GF) }}
+			{% elif erosion_model=='reducer' %}
+				{{ render_field(form.D2) }}
+				{{ render_field(form.GF) }}
+				{{ render_field(form.alpha) }}
+			{% elif erosion_model=='blindtee' %}
+				{{ render_field(form.GF) }}
+			{% elif erosion_model=='manifold' %}
+				{{ render_field(form.Dman) }}
+				{{ render_field(form.GF) }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<h4>PVT Input</h4>
+			{{ render_field(form.rho_l) }}
+			{{ render_field(form.mu_l) }}
+			{{ render_field(form.rho_g) }}
+			{{ render_field(form.mu_g) }}
+		</div>
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<h4>Flow Input</h4>
+			{{ render_field(form.v_l_s) }}
+			{{ render_field(form.v_g_s) }}
+		</div>
+		<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+			<!-- Will expect an svg image with the same erosion model name-->
+			<center><img src="/static/images/{{ erosion_model }}.svg" width="200" height="200"></center>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-lg-12 mx-lg-auto mx-md-auto">
+			<center>{{ render_field(form.calculate) }}</center>
+		</div>
+	</div>
+</div>
+</form>
+
+
+
+{% block modal %}
+{% endblock modal %}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+{% block script %}
+{% endblock script %}
+
+{% endblock content%}
+
+
+
