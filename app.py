@@ -2,7 +2,7 @@ import logging
 import os
 from io import StringIO
 from flask import Flask, render_template, redirect, url_for, request
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap4
 from pysand import __version__ as pysand_version
 from forms import BaseForm, Bend, Reducer, BlindTee, Manifold
 from modules import calcErosion
@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object('config.DevConfig')
 
 # Flask-Bootstrap requires this line
-Bootstrap(app)
+Bootstrap4(app)
 
 # all Flask routes below
 

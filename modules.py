@@ -1,6 +1,24 @@
 # functions to be used by the routes
 #from app import erosion
 
+def getErosionForm(erosion_model):
+    from forms import BaseForm, Bend, Reducer, BlindTee, Manifold
+
+    if erosion_model == 'bend':
+        form = Bend()
+    elif erosion_model == 'reducer':
+        form = Reducer()
+    elif erosion_model == 'blindtee':
+        form = BlindTee()
+    elif erosion_model == 'smooth':
+        form = BaseForm()
+    elif erosion_model == 'manifold':
+        form = Manifold()
+    else:
+        erosion_model = 'bend'
+        form = Bend(formdata=None)  # Empty form, insert defaults
+    return form
+
 def calcErosion(form, erosion_model):
     from flask import request
     from pysand.erosion import bend, reducer, tee, straight_pipe, manifold
