@@ -2,21 +2,25 @@
 <html lang="en">
     <head>
         {% block head %}
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        {% block styles %}
-            <!-- Bootstrap CSS -->
-            {{ bootstrap.load_css() }}
-        {% endblock %}
+            {% block styles %}
+                <!-- Bootstrap CSS -->
+                {{ bootstrap.load_css() }}
+            {% endblock %}
 
-        <title>Erosion Calculator</title>
+            {% block title %}
+            {% endblock %}
+            
+            <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">    
         {% endblock %}
     </head>
     <body>
         <!-- Your page content -->
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
 
         {% block scripts %}
             <!-- Optional JavaScript -->
