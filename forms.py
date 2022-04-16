@@ -1,6 +1,6 @@
 from lib2to3.pytree import Base
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, DecimalField
+from wtforms import SubmitField, SelectField, DecimalField, HiddenField
 from wtforms.validators import DataRequired, NumberRange
 from data import materials_tuples, erosion_models_tuples
 
@@ -13,7 +13,7 @@ class ErosionModel(FlaskForm):
 
 class BaseForm(FlaskForm):
     # Geometry and material
-    erosion_model = SelectField('Select erosion model', choices=erosion_models_tuples, validators=[DataRequired()])
+    erosion_model = SelectField('Select erosion model', default='bend', choices=erosion_models_tuples, validators=[DataRequired()])
     material = SelectField('Select material', choices=materials_tuples, validators=[DataRequired()])
     internal_diameter = DecimalField('Inner diameter (D) [m]', default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     
