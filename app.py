@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap4
 from pysand import __version__ as pysand_version
 from forms import BaseForm, Bend, Reducer, BlindTee, Manifold # TODO: remove after not needed
-from modules import calcErosion, getErosionForm, getVariables
+from modules import calcErosion, getErosionForm, getVariables, materialProperties
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
@@ -41,8 +41,16 @@ def erosioncalc(erosion_model):
 
 @app.route('/api/materials', methods=['GET'])
 def getMaterials():
-    import json
-    return json.dumps(getMaterialList())
+    material = request.args.get('material')
+    matDict = materialProperties('properties')
+
+    if material != None:
+        try:
+            return matDict[material]
+        except:
+            return 'Material not found'
+    else:
+        return matDict
 
 @app.route('/erosion', methods=['GET', 'POST'])
 def erosion():

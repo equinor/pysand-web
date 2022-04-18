@@ -81,7 +81,7 @@ def getVariables(erosion_model=None):
     else:
         return bendDict
 
-def getMaterials():
+def materialProperties(material):
 
     properties = {
                     'carbon_steel':             {'rho_t': 7800, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile'},
@@ -105,6 +105,12 @@ def getMaterials():
                     'B4C_boron_carbide':        {'rho_t': 2500, 'K': 3e-8, 'n': .9, 'angle_dependency': 'brittle'},
                     'SiSiC_ceramic_carbide':    {'rho_t': 3100, 'K': 7.4e-11, 'n': 2.7, 'angle_dependency': 'brittle'}
     }
+    if material == 'list':
+        return list(properties.keys())
+
+    if material == 'properties':
+        return properties
+
 
 def calcErosion(form, erosion_model):
     from flask import request
