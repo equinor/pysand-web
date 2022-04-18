@@ -3,9 +3,9 @@ import os
 from io import StringIO
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap4
-from pysand import __version__ as pysand_version, erosion
+from pysand import __version__ as pysand_version
 from forms import BaseForm, Bend, Reducer, BlindTee, Manifold # TODO: remove after not needed
-from modules import calcErosion, getErosionForm
+from modules import calcErosion, getErosionForm, getVariables
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
@@ -27,16 +27,22 @@ def erosionform(erosion_model):
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
 
-@app.route('/calculate/<erosion_model>/<material>/<internal_diameter>/<erosive_agent>/<particle_diameter>', defaults={'material': 'quartz', })
-def erosioncalc(erosion_model, material, internal_diameter, erosive_agent, particle_diameter):#, internal_diameter, particle_diameter, mass_sand, rho_l, mu_l, rho_g, mu_g, v_l_s, v_g_s, R, GF, D2, alpha, Dman):
-    return jsonify(
-        erosion_model = erosion_model,
-        material = material,
-        internal_diameter = float(internal_diameter),
-        erosive_agent = erosive_agent,
-        particle_diameter = float(particle_diameter)
+@app.route('/api/erosion/<erosion_model>', methods=['GET'])
+def erosioncalc(erosion_model):
+    from pysand import erosion
+    inputDict={'erosion_model': erosion_model, 'input': getVariables(erosion_model)}  # get all supported variables
+    outputDict={'erosion_rate': {'uom': 'mm/ton'}}
 
-    )  
+    for variable in inputDict['input']:  
+        inputDict['input'][variable]['value'] = request.args.get(variable)  # add input variables values to dictionary
+
+    #inputOutputDict = {inputDict, 'output': outputDict}
+    return jsonify(inputDict)
+
+@app.route('/api/materials', methods=['GET'])
+def getMaterials():
+    import json
+    return json.dumps(getMaterialList())
 
 @app.route('/erosion', methods=['GET', 'POST'])
 def erosion():

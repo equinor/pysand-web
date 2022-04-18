@@ -20,17 +20,20 @@ class BaseForm(FlaskForm):
     # Erosive agents
     erosive_agent = SelectField('Select erosive agent', choices=[('quartz', 'Quartz sand'), ('calcite', 'Calcite')], validators=[DataRequired()])
     particle_diameter = DecimalField('Particle diameter [mm]', default=0.1, validators=[DataRequired()])
-    mass_sand = DecimalField('Mass of sand [kg]', default=1000)
+    #mass_sand = DecimalField('Mass of sand [kg]', default=1000)
+    q_s = DecimalField('Sand production rate [g/s]', default=0.1)
 
     # PVT input
     rho_l = DecimalField('Liquid Density [kg/m³]', default=1000, validators=[DataRequired(), NumberRange(min=1, max=1500)])
     mu_l = DecimalField('Liquid Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
     rho_g = DecimalField('Gas Density [kg/m³]', default=200, validators=[DataRequired(), NumberRange(min=1, max=1500)])
     mu_g = DecimalField('Gas Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
+    #mu_m = DecimalField('Mix Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
 
     # Flow input
     v_l_s = DecimalField('Superficial Liquid Velocity [m/s]', default=10, validators=[DataRequired(), NumberRange(min=0, max=200)])
     v_g_s = DecimalField('Superficial Gas Velocity [m/s]', default=5, validators=[DataRequired(), NumberRange(min=0, max=200)])
+    #v_m = DecimalField('Mixture Velocity [m/s]', default=10, validators=[DataRequired(), NumberRange(min=0, max=200)])
 
     calculate = SubmitField('Calculate')
 
