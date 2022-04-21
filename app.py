@@ -1,5 +1,4 @@
 import logging
-import os
 from io import StringIO
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap4
@@ -26,31 +25,6 @@ def erosionform(erosion_model):
     form.erosion_model.data = erosion_model
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
-
-@app.route('/api/erosion/<erosion_model>', methods=['GET'])
-def erosioncalc(erosion_model):
-    from pysand import erosion
-    inputDict={'erosion_model': erosion_model, 'input': getVariables(erosion_model)}  # get all supported variables
-    outputDict={'erosion_rate': {'uom': 'mm/ton'}}
-
-    for variable in inputDict['input']:  
-        inputDict['input'][variable]['value'] = request.args.get(variable)  # add input variables values to dictionary
-
-    #inputOutputDict = {inputDict, 'output': outputDict}
-    return jsonify(inputDict)
-
-@app.route('/api/materials', methods=['GET'])
-def getMaterials():
-    material = request.args.get('material')
-    matDict = materialProperties('properties')
-
-    if material != None:
-        try:
-            return matDict[material]
-        except:
-            return 'Material not found'
-    else:
-        return matDict
 
 @app.route('/erosion', methods=['GET', 'POST'])
 def erosion():
@@ -84,6 +58,32 @@ def erosion():
 
     else: 
         return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
+
+#  API routes below
+@app.route('/api/erosion/<erosion_model>', methods=['GET'])
+def erosioncalc(erosion_model):
+    from pysand import erosion
+    inputDict={'erosion_model': erosion_model, 'input': getVariables(erosion_model)}  # get all supported variables
+    outputDict={'erosion_rate': {'uom': 'mm/ton'}}
+
+    for variable in inputDict['input']:  
+        inputDict['input'][variable]['value'] = request.args.get(variable)  # add input variables values to dictionary
+
+    #inputOutputDict = {inputDict, 'output': outputDict}
+    return jsonify(inputDict)
+
+@app.route('/api/materials', methods=['GET'])
+def getMaterials():
+    material = request.args.get('material')
+    matDict = materialProperties('properties')
+
+    if material != None:
+        try:
+            return matDict[material]
+        except:
+            return 'Material not found'
+    else:
+        return matDict
 
 
 # 2 routes to handle errors - they have templates too
