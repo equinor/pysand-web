@@ -1,5 +1,7 @@
 # functions to be used by the routes
 import sys, os
+from flask import request
+from pysand.erosion import *
 
 def getErosionForm(erosion_model):
     from forms import BaseForm, Bend, Reducer, BlindTee, Manifold
@@ -112,10 +114,7 @@ def materialProperties(material):
         return properties
 
 
-def calcErosion(form, erosion_model):
-    from flask import request
-    from pysand.erosion import bend, reducer, tee, straight_pipe, manifold
-
+def calcErosion(form, erosion_model, q_s):
     # General input for all erosion models
     v_l_s = float(request.form['v_l_s'])
     v_g_s = float(request.form['v_g_s'])
@@ -138,22 +137,32 @@ def calcErosion(form, erosion_model):
         R = float(request.form['R'])
         GF = float(request.form['GF'])
         rho_p = 2650
-        return bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=2650)
+        erosion_rate = bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=2650)
+        
     elif erosion_model == 'reducer':
         GF = float(request.form['GF'])
         D2 = float(request.form['D2'])
-        return reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=60, material=material)
+        erosion_rate = reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=60, material=material)
+
     elif erosion_model == 'blindtee':
         GF = float(request.form['GF'])
         D1 = D
         rho_p = 2650
-        return tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
+        erosion_rate = tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
+
     elif erosion_model == 'smooth':
-        return straight_pipe(v_m, D)
+        erosion_rate = straight_pipe(v_m, D)
+
     elif erosion_model == 'manifold':
         Dm = float(request.form['Dman'])
         GF = float(request.form['GF'])
         rho_p = 2650
-        return manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
+        erosion_rate = manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
+
     else:
-        return 1
+        erosion_rate = -999
+
+    mass_rate_yearly = float(q_s)/1000/1000*60*60*24*365  # yearly sand production [tonn/year]
+    erosion_rate_abs = erosion_rate * mass_rate_yearly
+    
+    return format(erosion_rate, '.2E'), format(erosion_rate_abs, '.4')

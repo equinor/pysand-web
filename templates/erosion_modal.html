@@ -11,8 +11,8 @@
       </div>
       <div class="modal-body">
         {% if status=="success" %}
-          <p><strong>Erosion rate:</strong> {{ erosion_rate }} m/ton</p>
-          <p><strong>Total erosion:</strong> {{ erosion }} mm</p>
+          <p><strong>Relative erosion rate:</strong> {{ erosion_rate }} mm/ton</p>
+          <p><strong>Erosion rate: </strong> {{ erosion_rate_abs }} mm/year</p>
           <p>{{ warnings }}</p>
         {% else %}
           <p>Error: {{ error }}</p>
@@ -27,6 +27,7 @@
 {% endblock %}
 
 {% block scripts %}
+{{ super() }}
 <script>
     $(document).ready(function(){
       console.log('window is loaded')

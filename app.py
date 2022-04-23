@@ -21,8 +21,25 @@ def index():
 
 @app.route('/erosion/<erosion_model>', methods=['GET', 'POST'])
 def erosionform(erosion_model):
+
     form = getErosionForm(erosion_model)
     form.erosion_model.data = erosion_model
+    q_s = form.q_s.data
+
+    if form.validate_on_submit():
+        try:
+            log_stream = StringIO()   
+            logging.basicConfig(stream=log_stream, level=logging.WARNING)
+            erosion_rate, erosion_rate_abs = calcErosion(form, erosion_model, q_s)
+            warnings = log_stream.getvalue()
+            
+            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='success', title='Calculation Successful', erosion_rate=erosion_rate, erosion_rate_abs = erosion_rate_abs, warnings=warnings)
+
+        except Exception as error:
+            app.logger.info(error)
+            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='failed', title='Error', error=error)
+
+
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
 

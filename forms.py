@@ -25,9 +25,9 @@ class BaseForm(FlaskForm):
 
     # PVT input
     rho_l = DecimalField('Liquid Density [kg/m³]', default=1000, validators=[DataRequired(), NumberRange(min=1, max=1500)])
-    mu_l = DecimalField('Liquid Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
+    mu_l = DecimalField('Liquid Viscosity [kg/ms]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
     rho_g = DecimalField('Gas Density [kg/m³]', default=200, validators=[DataRequired(), NumberRange(min=1, max=1500)])
-    mu_g = DecimalField('Gas Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
+    mu_g = DecimalField('Gas Viscosity [kg/ms]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
     #mu_m = DecimalField('Mix Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
 
     # Flow input
@@ -55,7 +55,7 @@ class BlindTee(BaseForm):
 class Manifold(BaseForm):
     # Manifold specific input
     Dman = DecimalField('Manifold Diameter (Dman) [m]', default=0.2, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
-    GF = DecimalField('Geometry factor', validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
 
 
 
