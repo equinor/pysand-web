@@ -22,9 +22,12 @@
         {% block content %}
         {% endblock %}
 
+        {{ bootstrap.load_js() }}
+
         {% block scripts %}
             <!-- Optional JavaScript -->
-            {{ bootstrap.load_js() }}
         {% endblock %}
+        
+
     </body>
 </html>
