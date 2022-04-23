@@ -6,7 +6,6 @@ from data import materials_tuples, erosion_models_tuples
 
 # with Flask-WTF, each web form is represented by a class
 # "NameForm" can change; "(FlaskForm)" cannot
-# see the route for "/" and "index.html" to see how this is used
 
 class ErosionModel(FlaskForm):
     erosion_model = SelectField('Select erosion model', choices=erosion_models_tuples, validators=[DataRequired()])
