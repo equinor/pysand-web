@@ -10,12 +10,14 @@ class Config:
     # Flask-WTF requires an enryption key - the string can be anything
     SECRET_KEY = urandom(32) #environ.get('SECRET_KEY')
     SERVER_NAME = 'local.docker:5000'
+    JSONIFY_PRETTYPRINT_REGULAR = True
     
 class ProdConfig(Config):
     '''Production config'''
     FLASK_ENV = 'production'
     DEBUG = False
     TESTING = False
+    
 
 class DevConfig(Config):
     '''Development config'''

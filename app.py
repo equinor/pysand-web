@@ -24,11 +24,11 @@ def erosionform(erosion_model):
 
     form = getErosionForm(erosion_model)
     form.erosion_model.data = erosion_model
-    q_s = form.q_s.data
+    q_s = float(form.q_s.data)
 
     if form.validate_on_submit():
         try:
-            log_stream = StringIO()   
+            log_stream = StringIO()
             logging.basicConfig(stream=log_stream, level=logging.WARNING)
             erosion_rate, erosion_rate_abs = calcErosion(form, erosion_model, q_s)
             warnings = log_stream.getvalue()
@@ -42,39 +42,6 @@ def erosionform(erosion_model):
 
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
-
-@app.route('/erosion', methods=['GET', 'POST'])
-def erosion():
-
-    if request.method == 'POST':
-        erosion_model = request.form['erosion_model']
-        form = getErosionForm(erosion_model)
-    else:
-        erosion_model = 'bend'
-        form = Bend(formdata=None)  # Empty form, insert defaults
-     
-    if form.validate_on_submit():
-        
-        try:
-            log_stream = StringIO()   
-            logging.basicConfig(stream=log_stream, level=logging.WARNING)
-            erosion_rate = calcErosion(form, erosion_model)
-            warnings = log_stream.getvalue()
-
-            mass_sand = float(request.form['mass_sand'])
-            if mass_sand > 0:
-                erosion = mass_sand/1000 * erosion_rate  
-            else:
-                erosion = -999             
-            
-            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='success', title='Calculation Successful', erosion_rate=erosion_rate, erosion=erosion, warnings=warnings)
-
-        except Exception as error:
-            app.logger.info(error)
-            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='failed', title='Error', error=error)
-
-    else: 
-        return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
 #  API routes below
 @app.route('/api/erosion/<erosion_model>', methods=['GET'])
@@ -100,7 +67,7 @@ def getMaterials():
         except:
             return 'Material not found'
     else:
-        return matDict
+        return jsonify(matDict)
 
 
 # 2 routes to handle errors - they have templates too
