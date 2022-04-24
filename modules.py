@@ -2,6 +2,8 @@
 import sys, os
 from flask import request
 from pysand.erosion import *
+from data import materialDict, erosiveAgentDict
+
 
 def getErosionForm(erosion_model):
     from forms import BaseForm, Bend, Reducer, BlindTee, Manifold
@@ -83,38 +85,19 @@ def getVariables(erosion_model=None):
     else:
         return bendDict
 
-def materialProperties(material):
+def materialProperties(material, returnvariable):
 
-    properties = {
-                    'carbon_steel':             {'rho_t': 7800, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile'},
-                    'duplex':                   {'rho_t': 7850, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile'},
-                    'ss316':                    {'rho_t': 8000, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile'},
-                    'inconel':                  {'rho_t': 8440, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile'},
-                    'grp_epoxy':                {'rho_t': 1800, 'K': 3e-10, 'n': 3.6, 'angle_dependency': 'ductile'},
-                    'grp_vinyl_ester':          {'rho_t': 1800, 'K': 6e-10, 'n': 3.6, 'angle_dependency': 'ductile'},
-                    'hdpe':                     {'rho_t': 1150, 'K': 3.5e-9, 'n': 2.9, 'angle_dependency': 'ductile'},
-                    'aluminium':                {'rho_t': 2700, 'K': 5.8e-9, 'n': 2.3, 'angle_dependency': 'ductile'},
-                    'dc_05_tungsten':           {'rho_t': 15250, 'K': 1.1e-10, 'n': 2.3, 'angle_dependency': 'brittle'},
-                    'cs_10_tungsten':           {'rho_t': 14800, 'K': 3.2e-10, 'n': 2.2, 'angle_dependency': 'brittle'},
-                    'cr_37_tungsten':           {'rho_t': 14600, 'K': 8.8e-11, 'n': 2.5, 'angle_dependency': 'brittle'},
-                    '95_alu_oxide':             {'rho_t': 3700, 'K': 6.8e-8, 'n': 2, 'angle_dependency': 'brittle'},
-                    '99_alu_oxide':             {'rho_t': 3700, 'K': 9.5e-7, 'n': 1.2, 'angle_dependency': 'brittle'},
-                    'psz_ceramic_zirconia':     {'rho_t': 5700, 'K': 4.1e-9, 'n': 2.5, 'angle_dependency': 'brittle'},
-                    'ZrO2-Y3_ceramic_zirconia': {'rho_t': 6070, 'K': 4e-11, 'n': 2.7, 'angle_dependency': 'brittle'},
-                    'SiC_silicon_carbide':      {'rho_t': 3100, 'K': 6.5e-9, 'n': 1.9, 'angle_dependency': 'brittle'},
-                    'Si3N4_silicon_nitride':    {'rho_t': 3200, 'K': 2e-10, 'n': 2, 'angle_dependency': 'brittle'},
-                    'TiB2_titanium_diboride':   {'rho_t': 4250, 'K': 9.3e-9, 'n': 1.9, 'angle_dependency': 'brittle'},
-                    'B4C_boron_carbide':        {'rho_t': 2500, 'K': 3e-8, 'n': .9, 'angle_dependency': 'brittle'},
-                    'SiSiC_ceramic_carbide':    {'rho_t': 3100, 'K': 7.4e-11, 'n': 2.7, 'angle_dependency': 'brittle'}
-    }
+    properties = materialDict
     if material == 'list':
         return list(properties.keys())
 
     if material == 'properties':
         return properties
 
+    return properties[material][returnvariable]
 
-def calcErosion(form, erosion_model, q_s):
+
+def calcRelErosion(form, erosion_model):
     # General input for all erosion models
     v_l_s = float(request.form['v_l_s'])
     v_g_s = float(request.form['v_g_s'])
@@ -130,24 +113,27 @@ def calcErosion(form, erosion_model, q_s):
     
     D = float(request.form['internal_diameter'])
     d_p = float(request.form['particle_diameter'])
+
+    erosive_agent = request.form['erosive_agent']
+    rho_p = erosiveAgentDict[erosive_agent]['rho_p']
+
     material = request.form['material']
     
 
     if erosion_model == 'bend':  
         R = float(request.form['R'])
         GF = float(request.form['GF'])
-        rho_p = 2650
-        erosion_rate = bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=2650)
+        erosion_rate = bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=rho_p)
         
     elif erosion_model == 'reducer':
         GF = float(request.form['GF'])
         D2 = float(request.form['D2'])
-        erosion_rate = reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=60, material=material)
+        alpha = 60
+        erosion_rate = reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=alpha, material=material)
 
     elif erosion_model == 'blindtee':
         GF = float(request.form['GF'])
         D1 = D
-        rho_p = 2650
         erosion_rate = tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
 
     elif erosion_model == 'smooth':
@@ -156,13 +142,10 @@ def calcErosion(form, erosion_model, q_s):
     elif erosion_model == 'manifold':
         Dm = float(request.form['Dman'])
         GF = float(request.form['GF'])
-        rho_p = 2650
         erosion_rate = manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
 
     else:
         erosion_rate = -999
 
-    mass_rate_yearly = float(q_s)/1000/1000*60*60*24*365  # yearly sand production [tonn/year]
-    erosion_rate_abs = erosion_rate * mass_rate_yearly
-    
-    return format(erosion_rate, '.2E'), format(erosion_rate_abs, '.4')
+   
+    return format(erosion_rate, '.2E')

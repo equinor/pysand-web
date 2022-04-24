@@ -17,9 +17,8 @@ class BaseForm(FlaskForm):
     internal_diameter = DecimalField('Inner diameter (D) [m]', default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     
     # Erosive agents
-    erosive_agent = SelectField('Select erosive agent', choices=[('quartz', 'Quartz sand'), ('calcite', 'Calcite')], validators=[DataRequired()])
+    erosive_agent = SelectField('Select erosive agent', default='quartz', choices=[('quartz', 'Quartz sand')], validators=[DataRequired()])
     particle_diameter = DecimalField('Particle diameter [mm]', default=0.1, validators=[DataRequired()])
-    #mass_sand = DecimalField('Mass of sand [kg]', default=1000)
     q_s = DecimalField('Sand production rate [g/s]', default=0.1)
 
     # PVT input

@@ -1,11 +1,4 @@
-def getListOfTuples(dictionary, nestedattribute):
-    a = []
-    for k, v in dictionary.items():
-        pair = (k, v[nestedattribute])
-        a.append(pair)
-    return a
-
-materialDict = {
+properties = {
                     'carbon_steel':             {'rho_t': 7800, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile', 'name': 'Carbon Steel'},
                     'duplex':                   {'rho_t': 7850, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile', 'name': 'Duplex'},
                     'ss316':                    {'rho_t': 8000, 'K': 2e-9, 'n': 2.6, 'angle_dependency': 'ductile', 'name': 'SS316'},
@@ -28,18 +21,9 @@ materialDict = {
                     'SiSiC_ceramic_carbide':    {'rho_t': 3100, 'K': 7.4e-11, 'n': 2.7, 'angle_dependency': 'brittle', 'name': 'Ceramic Carbide'}
     }
 
-erosiveAgentDict = {
-                    'quartz': {'rho_p': 2650, 'name': 'Quartz sand'}
-}
+a = []
+for k, v in properties.items():
+    pair = (k, v['rho_t'])
+    a.append(pair)
 
-erosionModelsDict = {
-                    'bend':     {'name': 'Pipe bends'},
-                    'reducer':  {'name': 'Reducer'},
-                    'blindtee': {'name': 'Blinded tee'},
-                    'smooth':   {'name': 'Smooth and straight pipes'},
-                    'manifold': {'name': 'Manifold'}
-}
-
-materials_tuples = getListOfTuples(materialDict, 'name')
-particles_tuples = getListOfTuples(erosiveAgentDict, 'name')
-erosion_models_tuples = getListOfTuples(erosionModelsDict, 'name')
+print(a)
