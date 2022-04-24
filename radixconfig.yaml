@@ -4,9 +4,6 @@ metadata:
   name: pysand-web
 spec:
   environments:
-    - name: dev
-      build:
-        from: main
     - name: prod
       build:
         from: main
