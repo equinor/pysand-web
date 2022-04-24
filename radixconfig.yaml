@@ -18,7 +18,7 @@ spec:
       publicPort: http
       ports:
        - name: http
-         port: 8000
+         port: 5000
   dnsAppAlias:
     environment: dev
     component: main

@@ -9,8 +9,7 @@ class Config:
     '''Base config'''
     # Flask-WTF requires an enryption key - the string can be anything
     SECRET_KEY = urandom(32) #environ.get('SECRET_KEY')
-    FLASK_ENV = 'development'
-    #SERVER_NAME = 'local.docker:5000'
+    SERVER_NAME = 'local.docker:5000'
     
 class ProdConfig(Config):
     '''Production config'''

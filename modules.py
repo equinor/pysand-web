@@ -129,8 +129,8 @@ def calcErosion(form, erosion_model, q_s):
     mu_m = (mu_l * v_l_s + mu_g * v_g_s) / (v_l_s + v_g_s)
     
     D = float(request.form['internal_diameter'])
-    d_p = 0.1
-    material = 'duplex'
+    d_p = request.form['particle_diameter']
+    material = request.form['material']
     
 
     if erosion_model == 'bend':  
