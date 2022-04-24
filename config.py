@@ -9,7 +9,7 @@ class Config:
     '''Base config'''
     # Flask-WTF requires an enryption key - the string can be anything
     SECRET_KEY = urandom(32) #environ.get('SECRET_KEY')
-    SERVER_NAME = 'local.docker:5000'
+    #SERVER_NAME = 'local.docker:5000'
     JSONIFY_PRETTYPRINT_REGULAR = True
     
 class ProdConfig(Config):
