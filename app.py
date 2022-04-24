@@ -8,7 +8,7 @@ from modules import calcErosion, getErosionForm, getVariables, materialPropertie
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
-app.config.from_object('config.DevConfig')
+app.config.from_object('config.ProdConfig')
 
 # Flask-Bootstrap requires this line
 Bootstrap4(app)
