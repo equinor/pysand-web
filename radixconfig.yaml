@@ -3,10 +3,6 @@ kind: RadixApplication
 metadata:
   name: pysand-web
 spec:
-  build:
-    secrets:
-      - SECRET_1
-      - SECRET_2
   environments:
     - name: dev
       build:
