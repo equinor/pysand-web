@@ -1,7 +1,7 @@
 apiVersion: radix.equinor.com/v1
 kind: RadixApplication
 metadata:
-  name: pysandweb
+  name: pysand-web
 spec:
   build:
     secrets:
