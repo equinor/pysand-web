@@ -14,6 +14,6 @@ spec:
       ports:
        - name: http
          port: 5000
-  dnsAppAlias:
-    environment: prod
-    component: main
+    dnsAppAlias:
+      environment: prod
+      component: main
