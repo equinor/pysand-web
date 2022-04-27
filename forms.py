@@ -43,7 +43,7 @@ class Bend(BaseForm):
 class Reducer(BaseForm):
     # Reducers specific input
     D2 = DecimalField('Reduced diameter (D2) [m]', default=0.05, validators=[DataRequired()])
-    GF = DecimalField('Geometry factor', validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
 
 class BlindTee(BaseForm):
