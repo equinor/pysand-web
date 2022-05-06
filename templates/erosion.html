@@ -20,12 +20,16 @@
 		{{ form.hidden_tag() }}
 		{{ render_hidden_errors(form) }}
 
-	<div class="container">
+	<div class="container" style="font-family: Equinor">
 		<div class="row">
-			<div class="col-md-12 col-lg-12 mx-lg-auto mx-md-auto">
-				<center><img src="https://github.com/equinor/pysand/blob/master/resources/logo.png?raw=true" alt="pySand"><p class="text-muted">pySand version: {{ pysand_version }}</p></center>
+			<div class="col-md-8 col-lg-8 mx-lg-auto mx-md-auto" >
+				<!--<center><img src="https://github.com/equinor/pysand/blob/master/resources/logo.png?raw=true" alt="pySand"><p class="text-muted">pySand version: {{ pysand_version }}</p></center>-->
 				<h2 class="pt-5 pb-2">Erosion Calculator</h2>
-				<p class="lead">Erosion calculator using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> repository and DNV RP-O501 </p>
+				<p class="lead">Erosion calculator using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> (v.{{ pysand_version }}) repository and DNV RP-O501</p>
+			</div>
+
+			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto pt-2 pb-2">
+				<p class="float-right"><img src="https://eds-static.equinor.com/logo/equinor-logo-primary.svg#red" height=75 alt="Equinor"/></p>
 			</div>
 		</div>
 		
