@@ -1,7 +1,8 @@
 # functions to be used by the routes
-import sys, os
+import logging
+from io import StringIO
 from flask import request
-from pysand.erosion import *
+from pysand import erosion
 from data import materialDict, erosiveAgentDict
 
 
@@ -118,34 +119,48 @@ def calcRelErosion(form, erosion_model):
     rho_p = erosiveAgentDict[erosive_agent]['rho_p']
 
     material = request.form['material']
-    
 
-    if erosion_model == 'bend':  
-        R = float(request.form['R'])
-        GF = float(request.form['GF'])
-        erosion_rate = bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=rho_p)
-        
-    elif erosion_model == 'reducer':
-        GF = float(request.form['GF'])
-        D2 = float(request.form['D2'])
-        alpha = 60
-        erosion_rate = reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=alpha, material=material)
+    #logger = logging.getLogger(erosion)
+    log_stream = StringIO()
+    logging.basicConfig(stream=log_stream, level=logging.WARNING)
 
-    elif erosion_model == 'blindtee':
-        GF = float(request.form['GF'])
-        D1 = D
-        erosion_rate = tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
+    try:
+        if erosion_model == 'bend':  
+            R = float(request.form['R'])
+            GF = float(request.form['GF'])
+            erosion_rate = erosion.bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=rho_p)
+            
+        elif erosion_model == 'reducer':
+            GF = float(request.form['GF'])
+            D2 = float(request.form['D2'])
+            alpha = 60
+            erosion_rate = erosion.reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=alpha, material=material)
 
-    elif erosion_model == 'smooth':
-        erosion_rate = straight_pipe(v_m, D)
+        elif erosion_model == 'blindtee':
+            GF = float(request.form['GF'])
+            D1 = D
+            erosion_rate = erosion.tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
 
-    elif erosion_model == 'manifold':
-        Dm = float(request.form['Dman'])
-        GF = float(request.form['GF'])
-        erosion_rate = manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
+        elif erosion_model == 'smooth':
+            erosion_rate = erosion.straight_pipe(v_m, D)
 
-    else:
+        elif erosion_model == 'manifold':
+            Dm = float(request.form['Dman'])
+            GF = float(request.form['GF'])
+            erosion_rate = erosion.manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
+
+        else:
+            erosion_rate = -999
+
+        status = 'success'
+        warning = log_stream.getvalue()
+        error = None
+
+    except Exception as error:
+        status = 'error'
+        warning = None
+        error = error
         erosion_rate = -999
-
+        
    
-    return format(erosion_rate, '.2E')
+    return (format(erosion_rate, '.2E'), status, warning, error)

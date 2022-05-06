@@ -29,18 +29,8 @@ def erosionform(erosion_model):
     form.erosion_model.data = erosion_model
 
     if form.validate_on_submit():
-        try:
-            log_stream = StringIO()
-            logging.basicConfig(stream=log_stream, level=logging.WARNING)
-            erosion_rate = calcRelErosion(form, erosion_model)
-            warnings = log_stream.getvalue()
-            
-            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='success', title='Calculation Successful', erosion_rate=erosion_rate, warnings=warnings)
-
-        except Exception as error:
-            app.logger.info(error)
-            return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, status='failed', title='Error', error=error)
-
+        erosion_rate, status, warning, error = calcRelErosion(form, erosion_model)
+        return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, title=status, erosion_rate=erosion_rate, status=status, warnings=warning, error=error)
 
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
 
