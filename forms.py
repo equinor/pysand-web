@@ -14,7 +14,7 @@ class BaseForm(FlaskForm):
     # Geometry and material
     erosion_model = SelectField('Select erosion model', default='bend', choices=erosion_models_tuples, validators=[DataRequired()])
     material = SelectField('Select material', choices=materials_tuples, validators=[DataRequired()])
-    internal_diameter = DecimalField('Inner diameter (D) [m]', default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
+    internal_diameter = DecimalField('Inner diameter (D) [m]', places=3, default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     
     # Erosive agents
     erosive_agent = SelectField('Select erosive agent', default='quartz', choices=[('quartz', 'Quartz sand')], validators=[DataRequired()])
@@ -22,15 +22,15 @@ class BaseForm(FlaskForm):
     q_s = DecimalField('Sand production rate [g/s]', default=0.1)
 
     # PVT input
-    rho_l = DecimalField('Liquid Density [kg/m³]', default=1000, validators=[DataRequired(), NumberRange(min=1, max=1500)])
+    rho_l = DecimalField('Liquid Density [kg/m³]', default=1000, places=0, validators=[DataRequired(), NumberRange(min=1, max=1500)])
     mu_l = DecimalField('Liquid Viscosity [kg/ms]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
-    rho_g = DecimalField('Gas Density [kg/m³]', default=200, validators=[DataRequired(), NumberRange(min=1, max=1500)])
+    rho_g = DecimalField('Gas Density [kg/m³]', default=200, places=0, validators=[DataRequired(), NumberRange(min=1, max=1500)])
     mu_g = DecimalField('Gas Viscosity [kg/ms]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
     #mu_m = DecimalField('Mix Viscosity [cp]', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
 
     # Flow input
-    v_l_s = DecimalField('Superficial Liquid Velocity [m/s]', default=10, validators=[DataRequired(), NumberRange(min=0, max=200)])
-    v_g_s = DecimalField('Superficial Gas Velocity [m/s]', default=5, validators=[DataRequired(), NumberRange(min=0, max=200)])
+    v_l_s = DecimalField('Superficial Liquid Velocity [m/s]', places=1, default=10, validators=[DataRequired(), NumberRange(min=0, max=200)])
+    v_g_s = DecimalField('Superficial Gas Velocity [m/s]', places=1, default=5, validators=[DataRequired(), NumberRange(min=0, max=200)])
     #v_m = DecimalField('Mixture Velocity [m/s]', default=10, validators=[DataRequired(), NumberRange(min=0, max=200)])
 
     calculate = SubmitField('Calculate')
@@ -42,9 +42,9 @@ class Bend(BaseForm):
 
 class Reducer(BaseForm):
     # Reducers specific input
-    D2 = DecimalField('Reduced diameter (D2) [m]', default=0.05, validators=[DataRequired()])
+    D2 = DecimalField('Reduced diameter (D2) [m]', places=3, default=0.05, validators=[DataRequired()])
     GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
-    alpha = DecimalField('Particle impact angle (\u03B1) [deg]', default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
+    alpha = DecimalField('Particle impact angle (\u03B1) [deg]', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
 
 class BlindTee(BaseForm):
     # Blind tee specific input
@@ -52,7 +52,7 @@ class BlindTee(BaseForm):
 
 class Manifold(BaseForm):
     # Manifold specific input
-    Dman = DecimalField('Manifold Diameter (Dman) [m]', default=0.2, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
+    Dman = DecimalField('Manifold Diameter (Dman) [m]', places=3, default=0.2, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
 
 
