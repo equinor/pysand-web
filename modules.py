@@ -4,21 +4,31 @@ from io import StringIO
 from flask import request
 from pysand import erosion
 from data import materialDict, erosiveAgentDict
-
+from forms import BaseForm, Bend, Tee, WeldedJoint, Reducer, Manifold, ChokeGallery, Probes, Flexible, NozzlevalveWall
 
 def getErosionForm(erosion_model):
-    from forms import BaseForm, Bend, Reducer, BlindTee, Manifold
-
+    
     if erosion_model == 'bend':
         form = Bend()
-    elif erosion_model == 'reducer':
-        form = Reducer()
-    elif erosion_model == 'blindtee':
-        form = BlindTee()
-    elif erosion_model == 'smooth':
+    elif erosion_model == 'tee':
+        form = Tee()
+    elif erosion_model == 'straight_pipe':
         form = BaseForm()
+    elif erosion_model == 'welded_joint':
+        form = WeldedJoint()
     elif erosion_model == 'manifold':
         form = Manifold()
+    elif erosion_model == 'reducer':
+        form = Reducer()
+    elif erosion_model == 'probes':
+        form = Probes()
+    elif erosion_model == 'flexible':
+        form = Flexible()
+    elif erosion_model == 'choke_gallery':
+        form = ChokeGallery()
+    elif erosion_model == 'nozzlevalve_wall':
+        form = NozzlevalveWall()
+    
     else:
         erosion_model = 'bend'
         form = Bend(formdata=None)  # Empty form, insert defaults

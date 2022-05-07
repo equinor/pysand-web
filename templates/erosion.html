@@ -43,15 +43,21 @@
 			
 				<h4 class="pt-4">PVT Input</h4>
 				{{ render_field(form.rho_l) }}
-				{{ render_field(form.mu_l) }}
 				{{ render_field(form.rho_g) }}
-				{{ render_field(form.mu_g) }}
+
+				{% if erosion_model in ['bend', 'tee', 'manifold', 'flexible', 'choke_gallery'] %}
+					{{ render_field(form.mu_l) }}
+					{{ render_field(form.mu_g) }}
+				{% endif %}
 			</div>
 
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
 				<h4>Particle Input</h4>
 				{{ render_field(form.erosive_agent) }}
-				{{ render_field(form.particle_diameter) }}
+
+				{% if erosion_model not in ['straight_pipe'] %}
+					{{ render_field(form.particle_diameter) }}
+				{% endif %}
 				{{ render_field(form.q_s) }}
 
 				<h4 class="pt-4">Flow Input</h4>
@@ -68,7 +74,7 @@
 					{{ render_field(form.D2) }}
 					{{ render_field(form.GF) }}
 					{{ render_field(form.alpha) }}
-				{% elif erosion_model=='blindtee' %}
+				{% elif erosion_model=='tee' %}
 					{{ render_field(form.GF) }}
 				{% elif erosion_model=='manifold' %}
 					{{ render_field(form.Dman) }}

@@ -33,11 +33,17 @@ erosiveAgentDict = {
 }
 
 erosionModelsDict = {
-                    'bend':     {'name': 'Pipe bends'},
-                    'reducer':  {'name': 'Reducer'},
-                    'blindtee': {'name': 'Blinded tee'},
-                    'smooth':   {'name': 'Smooth and straight pipes'},
-                    'manifold': {'name': 'Manifold'}
+                    'bend':             {'name': 'Pipe bends'},
+                    'tee':              {'name': 'Blinded tee'},
+                    'straight_pipe':    {'name': 'Smooth and straight pipes'},
+                    'welded_joint':     {'name': 'Welded joint'},
+                    'manifold':         {'name': 'Manifold'},
+                    'reducer':          {'name': 'Reducer'},
+                    'probes':           {'name': 'Intrusive erosion probes'},
+                    'flexible':         {'name': 'Flexible pipes'},
+                    'choke_gallery':    {'name': 'Choke gallery'},
+                    'nozzlevalve_wall': {'name': 'Nozzlevalve wall'},
+
 }
 
 materials_tuples = getListOfTuples(materialDict, 'name')
