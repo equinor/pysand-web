@@ -37,23 +37,23 @@ class BaseForm(FlaskForm):
 
 class Bend(BaseForm):
     # Pipe bend specific input
-    R = DecimalField('Radius of curvature (R) [# IDs]', default=3, validators=[DataRequired(), NumberRange(min=0.5, max=50)])
+    R = DecimalField('Radius of curvature (R) [# IDs]', default=3, places=1, validators=[DataRequired(), NumberRange(min=0.5, max=50)])
     GF = DecimalField('Geometry Factor', default=1, validators=[DataRequired()])
 
 class Reducer(BaseForm):
     # Reducers specific input
     D2 = DecimalField('Reduced diameter (D2) [m]', places=3, default=0.05, validators=[DataRequired()])
-    GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', places=1, default=1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
 
 class BlindTee(BaseForm):
     # Blind tee specific input
-    GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', places=1, default=1, validators=[DataRequired()])
 
 class Manifold(BaseForm):
     # Manifold specific input
     Dman = DecimalField('Manifold Diameter (Dman) [m]', places=3, default=0.2, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
-    GF = DecimalField('Geometry factor', default=1, validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', places=1, default=1, validators=[DataRequired()])
 
 
 
