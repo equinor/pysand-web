@@ -39,6 +39,13 @@
 				{{ render_field(form.erosion_model) }}
 				{{ render_field(form.material) }}
 				{{ render_field(form.internal_diameter) }}
+
+			
+				<h4 class="pt-4">PVT Input</h4>
+				{{ render_field(form.rho_l) }}
+				{{ render_field(form.mu_l) }}
+				{{ render_field(form.rho_g) }}
+				{{ render_field(form.mu_g) }}
 			</div>
 
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
@@ -46,6 +53,10 @@
 				{{ render_field(form.erosive_agent) }}
 				{{ render_field(form.particle_diameter) }}
 				{{ render_field(form.q_s) }}
+
+				<h4 class="pt-4">Flow Input</h4>
+				{{ render_field(form.v_l_s) }}
+				{{ render_field(form.v_g_s) }}
 			</div>
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
 				<!-- Hide / Unhide erosion model specific input here-->
@@ -63,25 +74,9 @@
 					{{ render_field(form.Dman) }}
 					{{ render_field(form.GF) }}
 				{% endif %}
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
-				<h4>PVT Input</h4>
-				{{ render_field(form.rho_l) }}
-				{{ render_field(form.mu_l) }}
-				{{ render_field(form.rho_g) }}
-				{{ render_field(form.mu_g) }}
-			</div>
-			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
-				<h4>Flow Input</h4>
-				{{ render_field(form.v_l_s) }}
-				{{ render_field(form.v_g_s) }}
-			</div>
-			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
 				<!-- Will expect an svg image with the same erosion model name-->
-				<center><img src="/static/images/{{ erosion_model }}.svg" width="200" height="200"></center>
+				<img class="pt-4 mx-auto d-block" src="/static/images/{{ erosion_model }}.svg" width="200" height="200">
 			</div>
 		</div>
 
