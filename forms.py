@@ -50,7 +50,7 @@ class Tee(BaseFormVisc):
 class WeldedJoint(BaseForm):
     # Blind tee specific input
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
-    h = DecimalField('Height of weld [m]', id='specific', places=3, default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
+    h = DecimalField('Height of weld (h) [m]', id='specific', places=3, default=0.001, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
     Location = SelectField('Location of weld', id='specific', default='downstream', choices=[('downstream', 'Downstream'), ('upstream', 'Upstream')], validators=[DataRequired()])
 
@@ -79,11 +79,12 @@ class Flexible(BaseFormVisc):
 
 class ChokeGallery(BaseFormVisc):
     # Erosion probe specific input
+    material = SelectField('Select material', id='geom', default='cr_37_tungsten', choices=materials_tuples, validators=[DataRequired()])
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
-    Rc = DecimalField('Radius of choke gallery [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
-    gap = DecimalField('Gap cage and choke body [m]', id='specific', default=0.01, validators=[DataRequired(), NumberRange(min=0)])
-    H = DecimalField('Height of choke gallery [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
+    Rc = DecimalField('Radius of choke gallery (Rc) [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
+    gap = DecimalField('Gap cage and choke body (gap) [m]', id='specific', default=0.01, validators=[DataRequired(), NumberRange(min=0)])
+    H = DecimalField('Height of choke gallery (H) [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
 
 class NozzlevalveWall(BaseForm):
     # Erosion probe specific input
