@@ -132,7 +132,7 @@ def calcRelErosion(erosion_model):
         mu_l = float(request.form['mu_l'])
         mu_g = float(request.form['mu_g'])
         if (v_l_s+v_g_s) > 0:
-            mu_m = (mu_l * v_l_s + mu_g * v_g_s) / (v_l_s + v_g_s)
+            mu_m = (mu_l * v_l_s + mu_g * v_g_s) / (v_l_s + v_g_s)/1000  # convert to kg/ms
         else:
             mu_m = None
             
@@ -141,7 +141,7 @@ def calcRelErosion(erosion_model):
     error = ''
     try:
         if erosion_model == 'bend':  
-            erosion_rate = erosion.bend(
+            E_rel = erosion.bend(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -154,7 +154,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'tee':
-            erosion_rate = erosion.tee(
+            E_rel = erosion.tee(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -166,13 +166,13 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'straight_pipe':
-            erosion_rate = erosion.straight_pipe(
+            E_rel = erosion.straight_pipe(
                 v_m=v_m, 
                 D=D
                 )
 
         elif erosion_model == 'welded_joint':
-            erosion_rate = erosion.welded_joint(
+            E_rel = erosion.welded_joint(
                 v_m=v_m,
                 rho_m=rho_m,
                 D=D,
@@ -184,7 +184,7 @@ def calcRelErosion(erosion_model):
             )
 
         elif erosion_model == 'manifold':
-            erosion_rate = erosion.manifold(
+            E_rel = erosion.manifold(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -197,7 +197,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'reducer':
-            erosion_rate = erosion.reducer(
+            E_rel = erosion.reducer(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 D1=D, 
@@ -209,7 +209,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'probes':
-            erosion_rate = erosion.probes(
+            E_rel = erosion.probes(
                 v_m=v_m,
                 rho_m=rho_m,
                 D=D,
@@ -219,7 +219,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'flexible':
-            erosion_rate = erosion.flexible(
+            E_rel = erosion.flexible(
                 v_m=v_m,
                 rho_m=rho_m,
                 mu_m=mu_m,
@@ -230,12 +230,12 @@ def calcRelErosion(erosion_model):
                 )
         
         elif erosion_model == 'choke_gallery':
-            erosion_rate = erosion.choke_gallery(
+            E_rel = erosion.choke_gallery(
                 v_m=v_m,
                 rho_m=rho_m,
                 mu_m=mu_m,
-                GF=float(request.form['GF']),
                 D=D, 
+                GF=float(request.form['GF']),
                 d_p=float(request.form['particle_diameter']),
                 R_c=float(request.form['R_c']),
                 gap=float(request.form['gap']),
@@ -244,7 +244,7 @@ def calcRelErosion(erosion_model):
             )
 
         elif erosion_model == 'nozzlevalve_wall':
-            erosion_rate = erosion.nozzlevalve_wall(
+            E_rel = erosion.nozzlevalve_wall(
                 v_m=v_m,
                 d_p=float(request.form['particle_diameter']),
                 GF=float(request.form['GF']),
@@ -253,17 +253,17 @@ def calcRelErosion(erosion_model):
             )
 
         else:
-            erosion_rate = -999
+            E_rel = -999
 
-        status = 'success'
+        status = 'Success'
         warning = log_stream.getvalue()
         
 
     except Exception as error:
-        status = 'error'
+        status = 'Error'
         warning = None
         error = error
-        erosion_rate = -999
-        return (format(erosion_rate, '.2E'), status, warning, error)
+        E_rel = -999
+        return (format(E_rel, '.2E'), status, warning, error)
    
-    return (format(erosion_rate, '.2E'), status, warning, error)
+    return (format(E_rel, '.2E'), status, warning, error)

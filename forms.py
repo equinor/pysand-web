@@ -18,7 +18,7 @@ class BaseForm(FlaskForm):
     
     # Particle input
     erosive_agent = SelectField('Select erosive agent', id='particle',default='quartz', choices=[('quartz', 'Quartz sand')], validators=[DataRequired()])
-    q_s = DecimalField('Sand production rate [g/s]', id='particle', default=0.1)
+    Q_s = DecimalField('Sand production rate [g/s]', id='particle', default=0.1)
 
     # PVT input
     rho_l = DecimalField('Liquid Density [kg/m³]', id='pvt', default=1000, places=0, validators=[DataRequired(), NumberRange(min=1, max=1500)])
@@ -32,8 +32,8 @@ class BaseForm(FlaskForm):
     calculate = SubmitField('Calculate')
 
 class BaseFormVisc(BaseForm):
-    mu_l = DecimalField('Liquid Viscosity [kg/ms]', id='pvt', default=1e-3, places=6, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
-    mu_g = DecimalField('Gas Viscosity [kg/ms]', id='pvt', default=1e-5, places=6, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
+    mu_l = DecimalField('Liquid Viscosity [cP]', id='pvt', default=1, places=3, validators=[DataRequired(), NumberRange(min=0.001, max=10)])
+    mu_g = DecimalField('Gas Viscosity [cP]', id='pvt', default=0.015, places=3, validators=[DataRequired(), NumberRange(min=0.001, max=10)])
     #mu_m = DecimalField('Mix Viscosity [cp]', id='pvt', default=0.01, validators=[DataRequired(), NumberRange(min=1e-6, max=1e-2)])
 
 class Bend(BaseFormVisc):
@@ -50,7 +50,7 @@ class Tee(BaseFormVisc):
 class WeldedJoint(BaseForm):
     # Blind tee specific input
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
-    h = DecimalField('Height of weld (h) [m]', id='specific', places=3, default=0.001, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
+    h = DecimalField('Height of weld (h) [m]', id='specific', places=3, default=0.001, validators=[DataRequired(), NumberRange(min=0, max=1)])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
     Location = SelectField('Location of weld', id='specific', default='downstream', choices=[('downstream', 'Downstream'), ('upstream', 'Upstream')], validators=[DataRequired()])
 
@@ -81,12 +81,13 @@ class ChokeGallery(BaseFormVisc):
     # Erosion probe specific input
     material = SelectField('Select material', id='geom', default='cr_37_tungsten', choices=materials_tuples, validators=[DataRequired()])
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
-    alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
-    Rc = DecimalField('Radius of choke gallery (Rc) [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
+    GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
+    R_c = DecimalField('Radius of choke gallery (Rc) [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
     gap = DecimalField('Gap cage and choke body (gap) [m]', id='specific', default=0.01, validators=[DataRequired(), NumberRange(min=0)])
     H = DecimalField('Height of choke gallery (H) [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
 
 class NozzlevalveWall(BaseForm):
     # Erosion probe specific input
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
+    GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
     At = DecimalField('Minimum flow area of the valve [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])

@@ -10,9 +10,11 @@
         </button>
       </div>
       <div class="modal-body">
-        {% if status=="success" %}
-          <p><strong>Relative erosion rate:</strong> {{ erosion_rate }} mm/ton</p>
-          <!--<p><strong>Erosion rate: </strong> {{ erosion_rate_abs }} mm/year</p>-->
+        {% if status=="Success" %}
+          <p><strong>Relative erosion rate:</strong> {{ E_rel }} mm/ton</p>
+          {% if erosion_yearly > 0 %}
+            <p>With a sand production rate of {{ Q_s }} g/s, we will expect an annual erosion rate of {{ erosion_yearly }} mm/year</p>
+          {% endif %}
           <p>{{ warnings }}</p>
         {% else %}
           <p>Error: {{ error }}</p>

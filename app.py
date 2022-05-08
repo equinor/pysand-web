@@ -1,12 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap4
 from pysand import __version__ as pysand_version
+from pysand.erosion import erosion_rate
 from modules import calcRelErosion, getErosionForm, getVariables
-from data import materialDict
+from data import materialDict, erosionModelsDict
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
-app.config.from_object('config.ProdConfig')
+app.config.from_object('config.DevConfig')
 
 # bootstrap-flask requires this line
 Bootstrap4(app)
@@ -25,12 +26,19 @@ def erosionform(erosion_model):
 
     form = getErosionForm(erosion_model)
     form.erosion_model.data = erosion_model
+    model_comment = erosionModelsDict[erosion_model]['comment']
+    Q_s = float(form.Q_s.data)
 
     if form.validate_on_submit():
-        erosion_rate, status, warning, error = calcRelErosion(erosion_model)
-        return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, title=status, erosion_rate=erosion_rate, status=status, warnings=warning, error=error)
+        E_rel, status, warning, error = calcRelErosion(erosion_model)
+        if (Q_s > 0 and float(E_rel) > 0):
+            erosion_yearly = erosion_rate(float(E_rel), Q_s)
+        else:
+            erosion_yearly = 0
 
-    return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)
+        return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, title=status, E_rel=E_rel, erosion_yearly=erosion_yearly, Q_s=Q_s, status=status, warnings=warning, error=error)
+
+    return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, model_comment=model_comment)
 
 # 2 error handling routes
 @app.errorhandler(404)

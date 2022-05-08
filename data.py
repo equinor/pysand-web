@@ -33,16 +33,19 @@ erosiveAgentDict = {
 }
 
 erosionModelsDict = {
-                    'bend':             {'name': 'Pipe bends'},
-                    'tee':              {'name': 'Blinded tee'},
-                    'straight_pipe':    {'name': 'Smooth and straight pipes'},
-                    'welded_joint':     {'name': 'Welded joint'},
-                    'manifold':         {'name': 'Manifold'},
-                    'reducer':          {'name': 'Reducer'},
-                    'probes':           {'name': 'Intrusive erosion probes'},
-                    'flexible':         {'name': 'Flexible pipes'},
-                    'choke_gallery':    {'name': 'Choke gallery'},
-                    'nozzlevalve_wall': {'name': 'Nozzlevalve wall'},
+                    'bend':             {'name': 'Pipe bends', 'comment': ''},
+                    'tee':              {'name': 'Blinded tee', 'comment': ''},
+                    'straight_pipe':    {'name': 'Smooth and straight pipes', 'comment': ''},
+                    'welded_joint':     {'name': 'Welded joint', 'comment': ''},
+                    'manifold':         {'name': 'Manifold', 'comment': ''},
+                    'reducer':          {'name': 'Reducer', 'comment': ''},
+                    'probes':           {'name': 'Intrusive erosion probes', 'comment': ''},
+                    'flexible':         {'name': 'Flexible pipes', 'comment': ''},
+                    'choke_gallery':    {'name': 'Choke gallery', 'comment': ''},
+                    'nozzlevalve_wall': {
+                                        'name':     'Nozzlevalve wall',
+                                        'comment':  'This is not an official DNV RP-O501 erosion model. General erosion equation tuned to match CFD results'
+                                        },
 
 }
 
