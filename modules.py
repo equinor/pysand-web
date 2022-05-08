@@ -108,7 +108,7 @@ def materialProperties(material, returnvariable):
     return properties[material][returnvariable]
 
 
-def calcRelErosion(form, erosion_model):
+def calcRelErosion(erosion_model):
     # General input for all erosion models
     v_l_s = float(request.form['v_l_s'])
     v_g_s = float(request.form['v_g_s'])
@@ -154,13 +154,11 @@ def calcRelErosion(form, erosion_model):
                 )
 
         elif erosion_model == 'tee':
-            GF = float(request.form['GF'])
-            D1 = D
             erosion_rate = erosion.tee(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
-                D1=D, 
+                D=D, 
                 GF=float(request.form['GF']), 
                 d_p=float(request.form['particle_diameter']), 
                 material=material, 

@@ -6,7 +6,7 @@ from data import materialDict
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
-app.config.from_object('config.ProdConfig')
+app.config.from_object('config.DevConfig')
 
 # bootstrap-flask requires this line
 Bootstrap4(app)
@@ -27,7 +27,7 @@ def erosionform(erosion_model):
     form.erosion_model.data = erosion_model
 
     if form.validate_on_submit():
-        erosion_rate, status, warning, error = calcRelErosion(form, erosion_model)
+        erosion_rate, status, warning, error = calcRelErosion(erosion_model)
         return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, title=status, erosion_rate=erosion_rate, status=status, warnings=warning, error=error)
 
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model)

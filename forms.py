@@ -38,48 +38,48 @@ class BaseFormVisc(BaseForm):
 
 class Bend(BaseFormVisc):
     # Pipe bend specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     R = DecimalField('Radius of curvature (R) [# IDs]', id='specific', default=3, places=1, validators=[DataRequired(), NumberRange(min=0.5, max=50)])
     GF = DecimalField('Geometry Factor', default=1, id='specific', validators=[DataRequired()])
 
 class Tee(BaseFormVisc):
     # Blind tee specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
 
 class WeldedJoint(BaseForm):
     # Blind tee specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     h = DecimalField('Height of weld [m]', id='specific', places=3, default=0.1, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
     Location = SelectField('Location of weld', id='specific', default='downstream', choices=[('downstream', 'Downstream'), ('upstream', 'Upstream')], validators=[DataRequired()])
 
 class Manifold(BaseFormVisc):
     # Manifold specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     Dman = DecimalField('Manifold Diameter (Dman) [m]', id='specific', places=3, default=0.2, validators=[DataRequired(), NumberRange(min=0.01, max=1)])
     GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
 
 class Reducer(BaseForm):
     # Reducers specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     D2 = DecimalField('Reduced diameter (D2) [m]', id='specific', places=3, default=0.05, validators=[DataRequired()])
     GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
 
 class Probes(BaseForm):
     # Erosion probe specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
 
 class Flexible(BaseFormVisc):
     # Erosion probe specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     mbr = DecimalField('Minimum bending radius in operation [# IDs]', id='specific', default=5, places=1, validators=[DataRequired(), NumberRange(min=0.5, max=50)])
 
 class ChokeGallery(BaseFormVisc):
     # Erosion probe specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     alpha = DecimalField('Particle impact angle (\u03B1) [deg]', id='specific', places=0, default=60, validators=[DataRequired(), NumberRange(min=0, max=90)])
     Rc = DecimalField('Radius of choke gallery [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
     gap = DecimalField('Gap cage and choke body [m]', id='specific', default=0.01, validators=[DataRequired(), NumberRange(min=0)])
@@ -87,5 +87,5 @@ class ChokeGallery(BaseFormVisc):
 
 class NozzlevalveWall(BaseForm):
     # Erosion probe specific input
-    particle_diameter = DecimalField('Particle diameter [mm]', id='specific', default=0.1, validators=[DataRequired()])
+    particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     At = DecimalField('Minimum flow area of the valve [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
