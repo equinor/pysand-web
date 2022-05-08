@@ -234,7 +234,7 @@ def calcRelErosion(erosion_model):
                 v_m=v_m,
                 rho_m=rho_m,
                 mu_m=mu_m,
-                GF=GF,
+                GF=float(request.form['GF']),
                 D=D, 
                 d_p=float(request.form['particle_diameter']),
                 R_c=float(request.form['R_c']),
