@@ -114,63 +114,158 @@ def calcRelErosion(form, erosion_model):
     v_g_s = float(request.form['v_g_s'])
     v_m = v_l_s + v_g_s
 
-    rho_l = float(request.form['rho_l'])
-    rho_g = float(request.form['rho_g'])
-    rho_m = (rho_l * v_l_s + rho_g * v_g_s) / (v_l_s + v_g_s)
-
-    mu_l = float(request.form['mu_l'])
-    mu_g = float(request.form['mu_g'])
-    mu_m = (mu_l * v_l_s + mu_g * v_g_s) / (v_l_s + v_g_s)
-    
     D = float(request.form['internal_diameter'])
-    d_p = float(request.form['particle_diameter'])
 
     erosive_agent = request.form['erosive_agent']
-    rho_p = erosiveAgentDict[erosive_agent]['rho_p']
 
     material = request.form['material']
 
-    #logger = logging.getLogger(erosion)
+    if erosion_model in ['bend', 'tee', 'welded_joint', 'manifold', 'reducer', 'probes', 'flexible', 'choke_gallery']:
+        rho_l = float(request.form['rho_l'])
+        rho_g = float(request.form['rho_g'])
+        if (v_l_s+v_g_s) > 0:
+            rho_m = (rho_l * v_l_s + rho_g * v_g_s) / (v_l_s + v_g_s)
+        else:
+            rho_m = None
+
+    if erosion_model in ['bend', 'tee', 'manifold', 'flexible', 'choke_gallery']:
+        mu_l = float(request.form['mu_l'])
+        mu_g = float(request.form['mu_g'])
+        if (v_l_s+v_g_s) > 0:
+            mu_m = (mu_l * v_l_s + mu_g * v_g_s) / (v_l_s + v_g_s)
+        else:
+            mu_m = None
+            
     log_stream = StringIO()
     logging.basicConfig(stream=log_stream, level=logging.WARNING)
-
+    error = ''
     try:
         if erosion_model == 'bend':  
-            R = float(request.form['R'])
-            GF = float(request.form['GF'])
-            erosion_rate = erosion.bend(v_m, rho_m, mu_m, R, GF, D, d_p, material=material, rho_p=rho_p)
-            
-        elif erosion_model == 'reducer':
-            GF = float(request.form['GF'])
-            D2 = float(request.form['D2'])
-            alpha = 60
-            erosion_rate = erosion.reducer(v_m, rho_m, D, D2, d_p, GF=GF, alpha=alpha, material=material)
+            erosion_rate = erosion.bend(
+                v_m=v_m, 
+                rho_m=rho_m, 
+                mu_m=mu_m, 
+                R=float(request.form['R']), 
+                GF=float(request.form['GF']), 
+                D=float(request.form['internal_diameter']), 
+                d_p=float(request.form['particle_diameter']), 
+                material=material, 
+                rho_p=erosiveAgentDict[erosive_agent]['rho_p']
+                )
 
-        elif erosion_model == 'blindtee':
+        elif erosion_model == 'tee':
             GF = float(request.form['GF'])
             D1 = D
-            erosion_rate = erosion.tee(v_m, rho_m, mu_m, GF, D1, d_p, material=material, rho_p=rho_p)
+            erosion_rate = erosion.tee(
+                v_m=v_m, 
+                rho_m=rho_m, 
+                mu_m=mu_m, 
+                D1=D, 
+                GF=float(request.form['GF']), 
+                d_p=float(request.form['particle_diameter']), 
+                material=material, 
+                rho_p=erosiveAgentDict[erosive_agent]['rho_p']
+                )
 
-        elif erosion_model == 'smooth':
-            erosion_rate = erosion.straight_pipe(v_m, D)
+        elif erosion_model == 'straight_pipe':
+            erosion_rate = erosion.straight_pipe(
+                v_m=v_m, 
+                D=D
+                )
+
+        elif erosion_model == 'welded_joint':
+            erosion_rate = erosion.welded_joint(
+                v_m=v_m,
+                rho_m=rho_m,
+                D=D,
+                d_p=float(request.form['particle_diameter']),
+                h=float(request.form['h']),
+                alpha=float(request.form['alpha']),
+                location=request.form['Location'],
+                material=material
+            )
 
         elif erosion_model == 'manifold':
-            Dm = float(request.form['Dman'])
-            GF = float(request.form['GF'])
-            erosion_rate = erosion.manifold(v_m, rho_m, mu_m, GF, D, d_p, Dm, rho_p=rho_p, material=material)
+            erosion_rate = erosion.manifold(
+                v_m=v_m, 
+                rho_m=rho_m, 
+                mu_m=mu_m, 
+                GF=float(request.form['GF']), 
+                D=D, 
+                d_p=float(request.form['particle_diameter']), 
+                Dm=float(request.form['Dman']), 
+                rho_p=erosiveAgentDict[erosive_agent]['rho_p'], 
+                material=material
+                )
+
+        elif erosion_model == 'reducer':
+            erosion_rate = erosion.reducer(
+                v_m=v_m, 
+                rho_m=rho_m, 
+                D1=D, 
+                D2=float(request.form['D2']), 
+                d_p=float(request.form['particle_diameter']), 
+                GF=float(request.form['GF']), 
+                alpha=float(request.form['alpha']), 
+                material=material
+                )
+
+        elif erosion_model == 'probes':
+            erosion_rate = erosion.probes(
+                v_m=v_m,
+                rho_m=rho_m,
+                D=D,
+                d_p=float(request.form['particle_diameter']),
+                alpha=float(request.form['alpha']),
+                material=material
+                )
+
+        elif erosion_model == 'flexible':
+            erosion_rate = erosion.flexible(
+                v_m=v_m,
+                rho_m=rho_m,
+                mu_m=mu_m,
+                D=D,
+                mbr=float(request.form['mbr']),
+                d_p=float(request.form['particle_diameter']),
+                material=material
+                )
+        
+        elif erosion_model == 'choke_gallery':
+            erosion_rate = erosion.choke_gallery(
+                v_m=v_m,
+                rho_m=rho_m,
+                mu_m=mu_m,
+                GF=GF,
+                D=D, 
+                d_p=float(request.form['particle_diameter']),
+                R_c=float(request.form['R_c']),
+                gap=float(request.form['gap']),
+                H=float(request.form['H']),
+                material=material
+            )
+
+        elif erosion_model == 'nozzlevalve_wall':
+            erosion_rate = erosion.nozzlevalve_wall(
+                v_m=v_m,
+                d_p=float(request.form['particle_diameter']),
+                GF=float(request.form['GF']),
+                At=float(request.form['At']),
+                material=material
+            )
 
         else:
             erosion_rate = -999
 
         status = 'success'
         warning = log_stream.getvalue()
-        error = None
+        
 
     except Exception as error:
         status = 'error'
         warning = None
         error = error
         erosion_rate = -999
-        
+        return (format(erosion_rate, '.2E'), status, warning, error)
    
     return (format(erosion_rate, '.2E'), status, warning, error)
