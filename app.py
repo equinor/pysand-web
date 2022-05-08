@@ -6,7 +6,7 @@ from data import materialDict
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
-app.config.from_object('config.DevConfig')
+app.config.from_object('config.ProdConfig')
 
 # bootstrap-flask requires this line
 Bootstrap4(app)
