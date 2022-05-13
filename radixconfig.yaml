@@ -20,6 +20,3 @@ spec:
   dnsAppAlias:
     environment: prod
     component: main
-  dnsAppAlias:
-    environment: dev
-    component: main
