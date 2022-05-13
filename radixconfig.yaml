@@ -22,4 +22,4 @@ spec:
     component: main
   dnsAppAlias:
     environment: dev
-    component: dev
+    component: main
