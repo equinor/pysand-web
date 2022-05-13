@@ -7,8 +7,11 @@ spec:
     - name: prod
       build:
         from: main
+    - name: dev
+      build:
+        from: dev
   components:
-    - name: main
+    - name: frontend
       src: "."
       publicPort: http
       ports:
@@ -16,4 +19,4 @@ spec:
          port: 5000
   dnsAppAlias:
     environment: prod
-    component: main
+    component: frontend
