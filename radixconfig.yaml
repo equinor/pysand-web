@@ -7,9 +7,6 @@ spec:
     - name: prod
       build:
         from: main
-    - name: dev
-      build:
-        from: dev
   components:
     - name: main
       src: "."
