@@ -14,15 +14,15 @@ spec:
       ports:
        - name: http
          port: 5000
-      #authentication:
-      #  oauth2:
-      #    clientId: a20ad0e0-23a7-4e6f-b456-a86cc158c887
-      #    scope: openid profile email offline_access
-      #    setXAuthRequestHeaders: true
-      #    setAuthorizationHeader: true
-      #    sessionStoreType: redis
-      #    redisStore:
-      #      connectionUrl: redis://redis:6379
+      authentication:
+        oauth2:
+          clientId: a20ad0e0-23a7-4e6f-b456-a86cc158c887
+          scope: openid profile email offline_access
+          setXAuthRequestHeaders: true
+          setAuthorizationHeader: true
+          sessionStoreType: redis
+          redisStore:
+            connectionUrl: redis://redis:6379
     - name: redis
       image: bitnami/redis:latest
       secrets:
