@@ -1,8 +1,8 @@
 ###### Requirements ######
 pandas == 1.4.2
-numpy == 1.22.3
-scipy == 1.8.0
-pysand == 1.7.5
+numpy == 1.22.4
+scipy == 1.8.1
+pysand == 1.7.7
 flask == 2.1.1
 bootstrap-flask == 2.0.2
 wtforms == 3.0.1
