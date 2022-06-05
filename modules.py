@@ -41,6 +41,7 @@ def getVariables(erosion_model=None):
         'particle_diameter': {'uom': 'mm', 'description': 'Particle diameter'}, 
         'material': {'uom': '', 'description': 'Material exposed to erosion'},
         'rho_p': {'uom': 'kg/m3', 'description': 'Particle density'},
+        'crushed': {'uom': 'True/False', 'description': 'Crushed particles'},
         'q_sand' : {'uom': 'g/s', 'description': 'Sand production rate'}, 
         'rho_l': {'uom': 'kg/m3', 'description': 'Liquid density'}, 
         'mu_l': {'uom': 'kg/ms', 'description': 'Liquid viscosity'}, 
@@ -62,16 +63,16 @@ def getVariables(erosion_model=None):
         'At': {'uom': 'm2', 'description': 'Target area. Set to minimum flow area of the valve'}
         }
 
-    bendDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_p', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'R', 'GF'}}
-    teeDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_p', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'GF'}}
-    straightDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'v_l_s', 'v_g_s'}}
-    weldedDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'location', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'alpha'}}
-    manifoldDict =  {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_p', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'manifold_diameter', 'GF'}}
-    reducerDict =  {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'reduced_diameter', 'GF', 'alpha'}}
-    probeDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'alpha'}}
-    flexibleDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'mbr'}}
-    chokeGalleryDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'R_c', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'gap', 'H', 'GF'}}
-    nozzlevalveDict = {key: allVariables[key] for key in allVariables.keys()&{'particle_diameter', 'material', 'v_l_s', 'v_g_s', 'At', 'GF'}}
+    bendDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_p', 'crushed', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'R', 'GF'}}
+    teeDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'material', 'rho_p', 'crushed', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'GF'}}
+    straightDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'crushed', 'v_l_s', 'v_g_s'}}
+    weldedDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'location', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'alpha'}}
+    manifoldDict =  {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'rho_p', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'manifold_diameter', 'GF'}}
+    reducerDict =  {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'reduced_diameter', 'GF', 'alpha'}}
+    probeDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'rho_l', 'rho_g', 'v_l_s', 'v_g_s', 'alpha'}}
+    flexibleDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'mbr'}}
+    chokeGalleryDict = {key: allVariables[key] for key in allVariables.keys()&{'internal_diameter', 'particle_diameter', 'crushed', 'material', 'R_c', 'rho_l', 'mu_l', 'rho_g', 'mu_g', 'v_l_s', 'v_g_s', 'gap', 'H', 'GF'}}
+    nozzlevalveDict = {key: allVariables[key] for key in allVariables.keys()&{'particle_diameter', 'crushed', 'material', 'v_l_s', 'v_g_s', 'At', 'GF'}}
 
     if erosion_model == 'bend':
         return bendDict
@@ -97,11 +98,9 @@ def getVariables(erosion_model=None):
         return bendDict
 
 def materialProperties(material, returnvariable):
-
     properties = materialDict
     if material == 'list':
         return list(properties.keys())
-
     if material == 'properties':
         return properties
 
@@ -117,6 +116,7 @@ def calcRelErosion(erosion_model):
     D = float(request.form['internal_diameter'])
 
     erosive_agent = request.form['erosive_agent']
+    crushed = request.form['crushed'] == 'True'  # Converts to a boolean, True or False
 
     material = request.form['material']
 
@@ -150,7 +150,8 @@ def calcRelErosion(erosion_model):
                 D=float(request.form['internal_diameter']), 
                 d_p=float(request.form['particle_diameter']), 
                 material=material, 
-                rho_p=erosiveAgentDict[erosive_agent]['rho_p']
+                rho_p=erosiveAgentDict[erosive_agent]['rho_p'],
+                crushed=crushed
                 )
 
         elif erosion_model == 'tee':
@@ -162,13 +163,15 @@ def calcRelErosion(erosion_model):
                 GF=float(request.form['GF']), 
                 d_p=float(request.form['particle_diameter']), 
                 material=material, 
-                rho_p=erosiveAgentDict[erosive_agent]['rho_p']
+                rho_p=erosiveAgentDict[erosive_agent]['rho_p'],
+                crushed=crushed
                 )
 
         elif erosion_model == 'straight_pipe':
             E_rel = erosion.straight_pipe(
                 v_m=v_m, 
-                D=D
+                D=D,
+                crushed=crushed
                 )
 
         elif erosion_model == 'welded_joint':
@@ -180,7 +183,8 @@ def calcRelErosion(erosion_model):
                 h=float(request.form['h']),
                 alpha=float(request.form['alpha']),
                 location=request.form['Location'],
-                material=material
+                material=material,
+                crushed=crushed
             )
 
         elif erosion_model == 'manifold':
@@ -193,7 +197,8 @@ def calcRelErosion(erosion_model):
                 d_p=float(request.form['particle_diameter']), 
                 Dm=float(request.form['Dman']), 
                 rho_p=erosiveAgentDict[erosive_agent]['rho_p'], 
-                material=material
+                material=material,
+                crushed=crushed
                 )
 
         elif erosion_model == 'reducer':
@@ -205,7 +210,8 @@ def calcRelErosion(erosion_model):
                 d_p=float(request.form['particle_diameter']), 
                 GF=float(request.form['GF']), 
                 alpha=float(request.form['alpha']), 
-                material=material
+                material=material,
+                crushed=crushed
                 )
 
         elif erosion_model == 'probes':
@@ -215,7 +221,8 @@ def calcRelErosion(erosion_model):
                 D=D,
                 d_p=float(request.form['particle_diameter']),
                 alpha=float(request.form['alpha']),
-                material=material
+                material=material,
+                crushed=crushed
                 )
 
         elif erosion_model == 'flexible':
@@ -226,7 +233,8 @@ def calcRelErosion(erosion_model):
                 D=D,
                 mbr=float(request.form['mbr']),
                 d_p=float(request.form['particle_diameter']),
-                material=material
+                material=material,
+                crushed=crushed
                 )
         
         elif erosion_model == 'choke_gallery':
@@ -240,7 +248,8 @@ def calcRelErosion(erosion_model):
                 R_c=float(request.form['R_c']),
                 gap=float(request.form['gap']),
                 H=float(request.form['H']),
-                material=material
+                material=material,
+                crushed=crushed
             )
 
         elif erosion_model == 'nozzlevalve_wall':
@@ -249,7 +258,8 @@ def calcRelErosion(erosion_model):
                 d_p=float(request.form['particle_diameter']),
                 GF=float(request.form['GF']),
                 At=float(request.form['At']),
-                material=material
+                material=material,
+                crushed=crushed
             )
 
         else:

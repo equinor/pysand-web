@@ -1,6 +1,6 @@
 from lib2to3.pytree import Base
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, DecimalField, HiddenField
+from wtforms import SubmitField, SelectField, DecimalField
 from wtforms.validators import DataRequired, NumberRange
 from data import materials_tuples, erosion_models_tuples
 
@@ -19,6 +19,7 @@ class BaseForm(FlaskForm):
     # Particle input
     erosive_agent = SelectField('Select erosive agent', id='particle',default='quartz', choices=[('quartz', 'Quartz sand')], validators=[DataRequired()])
     Q_s = DecimalField('Sand production rate [g/s]', id='particle', default=0.1)
+    crushed = SelectField('Particle sphericity', id='particle', default='False', choices=[('False', 'Uncrushed'), ('True', 'Crushed')], validators=[DataRequired()])
 
     # PVT input
     rho_l = DecimalField('Liquid Density [kg/m³]', id='pvt', default=1000, places=0, validators=[DataRequired(), NumberRange(min=1, max=1500)])
