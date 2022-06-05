@@ -11,4 +11,15 @@ updates:
     directory: "/"
     # Check for updates once a week
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Raise pull requests for version updates
+    # to pip against the `main` branch
+    target-branch: "main"
+    # Labels on pull requests for version updates only
+    labels:
+      - "pip dependencies" 
