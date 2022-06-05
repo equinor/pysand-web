@@ -2,8 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap4
 from pysand import __version__ as pysand_version
 from pysand.erosion import erosion_rate
-from modules import calcRelErosion, getErosionForm, getVariables
-from data import materialDict, erosionModelsDict
+from modules import calcRelErosion, getErosionForm, getTransportForm, getVariables
+from data import materialDict, erosionModelsDict, transportModelsDict
 
 # Initialize Flask app and configure it
 app = Flask(__name__)
@@ -39,6 +39,13 @@ def erosionform(erosion_model):
         return render_template('erosion_modal.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, title=status, E_rel=E_rel, erosion_yearly=erosion_yearly, Q_s=Q_s, status=status, warnings=warning, error=error)
 
     return render_template('erosion.html', pysand_version=pysand_version, form=form, erosion_model=erosion_model, model_comment=model_comment)
+
+@app.route('/transport/<transport_model>',  methods=['GET', 'POST'])
+def transportform(transport_model):
+    form = getTransportForm(transport_model)
+    form.transport_model.data = transport_model
+    model_comment = transportModelsDict[transport_model]['comment']
+    return render_template('transport.html', form=form, model_comment=model_comment, pysand_version=pysand_version)
 
 # 2 error handling routes
 @app.errorhandler(404)

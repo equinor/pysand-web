@@ -1,3 +1,5 @@
+from pysand.erosion import material_properties
+
 def getListOfTuples(dictionary, nestedattribute):
     a = []
     for k, v in dictionary.items():
@@ -49,6 +51,12 @@ erosionModelsDict = {
 
 }
 
+transportModelsDict = {
+                    'stokes':           {'name': 'Stokes', 'comment': ''},
+                    'hydro':            {'name': 'Hydro', 'comment': 'Equinor sand transport model for horizontal pipelines. Based on T. Søntvedt (1995) and R. Schulkes (2002) work in Hydro'}
+}
+
 materials_tuples = getListOfTuples(materialDict, 'name')
 particles_tuples = getListOfTuples(erosiveAgentDict, 'name')
 erosion_models_tuples = getListOfTuples(erosionModelsDict, 'name')
+transport_models_tuples = getListOfTuples(transportModelsDict, 'name')

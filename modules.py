@@ -4,10 +4,9 @@ from io import StringIO
 from flask import request
 from pysand import erosion
 from data import materialDict, erosiveAgentDict
-from forms import BaseForm, Bend, Tee, WeldedJoint, Reducer, Manifold, ChokeGallery, Probes, Flexible, NozzlevalveWall
+from forms import BaseForm, Bend, Tee, WeldedJoint, Reducer, Manifold, ChokeGallery, Probes, Flexible, NozzlevalveWall, TransportStokesForm, TransportHydroForm
 
 def getErosionForm(erosion_model):
-    
     if erosion_model == 'bend':
         form = Bend()
     elif erosion_model == 'tee':
@@ -277,3 +276,11 @@ def calcRelErosion(erosion_model):
         return (format(E_rel, '.2E'), status, warning, error)
    
     return (format(E_rel, '.2E'), status, warning, error)
+
+def getTransportForm(transport_model='hydro'):
+    if transport_model == 'stokes':
+        form = TransportStokesForm()
+    else:
+        transport_model = 'hydro'
+        form = TransportHydroForm(formdata=None)  # Empty form, insert defaults
+    return form
