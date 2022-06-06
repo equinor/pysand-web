@@ -7,8 +7,9 @@
 
 
 {% block title %}
-	<title>Particle Transport</title>
+	<title>Erosion Calculator</title>
 {% endblock title%}
+
 
 {% block content %}
 
@@ -19,8 +20,8 @@
 	<div class="container" style="font-family: Equinor">
 		<div class="row">
 			<div class="col-md-8 col-lg-8 mx-lg-auto mx-md-auto" >
-				<h2 class="pt-5 pb-2">Particle Transport</h2>
-				<p class="lead">Particle transport using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> (v.{{ pysand_version }}) repository</p>
+				<h2 class="pt-5 pb-2">Erosion Calculator</h2>
+				<p class="lead">Erosion calculator using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> (v.{{ pysand_version }}) repository and DNV RP-O501</p>
 			</div>
 
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto pt-2 pb-2">
@@ -31,7 +32,7 @@
 		<div class="row">
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
 				<h4>Geometry and Material</h4>
-				{{ render_field(form.transport_model) }}
+				{{ render_field(form.erosion_model) }}
 				{% for field in form %}
 					{% if field.id == "geom" %}
 						{{ render_field(field) }}
@@ -54,6 +55,13 @@
 						{{ render_field(field) }}
 					{% endif %}
 				{% endfor %}
+
+				<h4 class="pt-4">Flow Input</h4>
+				{% for field in form %}
+					{% if field.id == "flow" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
 			</div>
 
 			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
@@ -66,7 +74,7 @@
 				{% endfor %}
 
 				<!-- Will expect an svg image with the same erosion model name-->
-				<!--<img class="pt-4 mx-auto d-block" src="/static/images/{{ erosion_model }}.svg" width="250">-->
+				<img class="pt-4 mx-auto d-block" src="/static/images/erosion/{{ erosion_model }}.svg" width="250">
 				<p class="pt-2">{{ model_comment }}</p>
 
 			</div>
@@ -83,15 +91,22 @@
 	{% block modal %}
 	{% endblock %}
 
-{% endblock content %}	
+{% endblock content %}		
 
 {% block scripts %}
 	<script>
-		let em_select = document.getElementById('transport_model');
+		let em_select = document.getElementById('erosion_model');
 		em_select.onchange = function(){
-			transport_model = em_select.value;
-			window.location.href = '/transport/'+transport_model;
+			erosion_model = em_select.value;
+			window.location.href = '/erosion/'+erosion_model;
 		}
 	</script>
 {% endblock %}
 	
+
+	
+
+
+
+
+
