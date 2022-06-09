@@ -1,0 +1,41 @@
+{% extends "transport/transport.html" %}
+{% block modal %}
+<div class="modal" tabindex="-1" id="modal_transport_results">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Hello</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% if status=="Success" %}
+          {% if transport_model == "stokes" %}
+          <p><strong>Critical velocity:</strong> {{ v0 }} m/s</p>
+          {% elif transport_model == "hydro" %}
+          <p><strong>Critical velocity for moving dunes:</strong> {{ v0 }} m/s</p>
+          <p><strong>Critical velocity for dispersed particles:</strong> {{ v1 }} m/s</p>
+          <p>{{ warnings }}</p>
+          {% endif%}
+        {% else %}
+          <p>Error: {{ error }}</p>
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $(document).ready(function(){
+      console.log('window is loaded')
+      $("#modal_erosion_results").modal("show")
+    })
+</script>
+{% endblock %}
