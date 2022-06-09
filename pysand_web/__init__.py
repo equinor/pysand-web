@@ -1,5 +1,6 @@
 '''Initialise Flask app'''
 from flask import Flask
+from flask_wtf import CSRFProtect
 from flask_bootstrap import Bootstrap4
 
 def create_app():
@@ -11,6 +12,7 @@ def create_app():
         static_folder='static'
         )
 
+    csrf = CSRFProtect(app)  # Global csrf protection (https://flask-wtf.readthedocs.io/en/latest/api/#module-flask_wtf.csrf)
     app.config.from_object('config.ProdConfig')
     Bootstrap4(app)
 
