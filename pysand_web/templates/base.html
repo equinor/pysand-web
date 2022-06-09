@@ -9,6 +9,9 @@
             {% block styles %}
                 <!-- Bootstrap CSS -->
                 {{ bootstrap.load_css() }}
+                <style>
+                    body { background: #e8f1f9; }
+                </style>
                 
                 <!-- Equinor fonts -->
                 <link rel="stylesheet" href="https://eds-static.equinor.com/font/equinor-font.css" />
@@ -17,10 +20,13 @@
             {% block title %}
             {% endblock %}
             
-            <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">    
+            <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         {% endblock %}
     </head>
     <body>
+
+        {% include 'nav.html' %}
+
         <!-- Your page content -->
         {% block content %}
         {% endblock %}

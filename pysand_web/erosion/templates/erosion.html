@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% from 'bootstrap4/form.html' import render_field, render_hidden_errors %}
+
+{% block styles %}
+{{ super() }}
+{% endblock styles%}
+
+
+{% block title %}
+	<title>Erosion Calculator</title>
+{% endblock title%}
+
+
+{% block content %}
+
+	<form class="form form-group" method="post" role="form">
+		{{ form.hidden_tag() }}
+		{{ render_hidden_errors(form) }}
+
+	<div class="container" style="font-family: Equinor">
+		<div class="row">
+			<div class="col-md-8 col-lg-8 mx-lg-auto mx-md-auto" >
+				<h2 class="pt-5 pb-2">Erosion Calculator</h2>
+				<p class="lead">Erosion calculator using the <a href="https://github.com/equinor/pysand">equinor/pysand</a> (v.{{ pysand_version }}) repository and DNV RP-O501</p>
+			</div>
+
+			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto pt-2 pb-2">
+				<p class="float-right"><img src="https://eds-static.equinor.com/logo/equinor-logo-primary.svg#red" height=75 alt="Equinor"/></p>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+				<h4>Geometry and Material</h4>
+				{{ render_field(form.erosion_model) }}
+				{% for field in form %}
+					{% if field.id == "geom" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
+				
+				<h4 class="pt-4">PVT Input</h4>
+				{% for field in form %}
+					{% if field.id == "pvt" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
+
+			</div>
+
+			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+				<h4>Particle Input</h4>
+				{% for field in form %}
+					{% if field.id == "particle" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
+
+				<h4 class="pt-4">Flow Input</h4>
+				{% for field in form %}
+					{% if field.id == "flow" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
+			</div>
+
+			<div class="col-md-4 col-lg-4 mx-lg-auto mx-md-auto">
+				<!-- Hide / Unhide erosion model specific input here-->
+				<h4>Specific Input</h4>
+				{% for field in form %}
+					{% if field.id == "specific" %}
+						{{ render_field(field) }}
+					{% endif %}
+				{% endfor %}
+
+				<!-- Will expect an svg image with the same erosion model name-->
+				<img class="pt-4 mx-auto d-block" src="/erosion/static/{{ erosion_model }}.svg" width="250">
+				<p class="pt-2">{{ model_comment }}</p>
+
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 col-lg-12 mx-lg-auto mx-md-auto">
+				<center>{{ render_field(form.calculate) }}</center>
+			</div>
+		</div>
+	</div>
+	</form>
+
+	{% block modal %}
+	{% endblock %}
+
+{% endblock content %}		
+
+{% block scripts %}
+	<script>
+		let em_select = document.getElementById('erosion_model');
+		em_select.onchange = function(){
+			erosion_model = em_select.value;
+			window.location.href = '/erosion/'+erosion_model;
+		}
+	</script>
+{% endblock %}
+	
+
+	
+
+
+
+
+

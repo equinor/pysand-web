@@ -2,13 +2,12 @@ from lib2to3.pytree import Base
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, DecimalField
 from wtforms.validators import DataRequired, NumberRange
-from data import materials_tuples, erosion_models_tuples
+from pysand_web.erosion.erosion_data import materials_tuples, erosion_models_tuples
 
-# with Flask-WTF, each web form is represented by a class
-# "NameForm" can change; "(FlaskForm)" cannot
 
-class ErosionModel(FlaskForm):
-    erosion_model = SelectField('Select erosion model', choices=erosion_models_tuples, validators=[DataRequired()])
+#################
+# Erosion Forms #
+#################
 
 class BaseForm(FlaskForm):
     # Geometry and material
@@ -92,3 +91,4 @@ class NozzlevalveWall(BaseForm):
     particle_diameter = DecimalField('Particle diameter [mm]', id='particle', default=0.1, validators=[DataRequired()])
     GF = DecimalField('Geometry factor', id='specific', places=1, default=1, validators=[DataRequired()])
     At = DecimalField('Minimum flow area of the valve [m]', id='specific', default=0.1, validators=[DataRequired(), NumberRange(min=0)])
+

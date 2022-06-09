@@ -1,13 +1,11 @@
-# functions to be used by the routes
 import logging
 from io import StringIO
 from flask import request
-from pysand import erosion
-from data import materialDict, erosiveAgentDict
-from forms import BaseForm, Bend, Tee, WeldedJoint, Reducer, Manifold, ChokeGallery, Probes, Flexible, NozzlevalveWall
+from pysand.erosion import *
+from pysand_web.erosion.erosion_data import materialDict, erosiveAgentDict
+from pysand_web.erosion.erosion_forms import BaseForm, Bend, Tee, WeldedJoint, Reducer, Manifold, ChokeGallery, Probes, Flexible, NozzlevalveWall
 
 def getErosionForm(erosion_model):
-    
     if erosion_model == 'bend':
         form = Bend()
     elif erosion_model == 'tee':
@@ -141,7 +139,7 @@ def calcRelErosion(erosion_model):
     error = ''
     try:
         if erosion_model == 'bend':  
-            E_rel = erosion.bend(
+            E_rel = bend(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -155,7 +153,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'tee':
-            E_rel = erosion.tee(
+            E_rel = tee(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -168,14 +166,14 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'straight_pipe':
-            E_rel = erosion.straight_pipe(
+            E_rel = straight_pipe(
                 v_m=v_m, 
                 D=D,
                 crushed=crushed
                 )
 
         elif erosion_model == 'welded_joint':
-            E_rel = erosion.welded_joint(
+            E_rel = welded_joint(
                 v_m=v_m,
                 rho_m=rho_m,
                 D=D,
@@ -188,7 +186,7 @@ def calcRelErosion(erosion_model):
             )
 
         elif erosion_model == 'manifold':
-            E_rel = erosion.manifold(
+            E_rel = manifold(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 mu_m=mu_m, 
@@ -202,7 +200,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'reducer':
-            E_rel = erosion.reducer(
+            E_rel = reducer(
                 v_m=v_m, 
                 rho_m=rho_m, 
                 D1=D, 
@@ -215,7 +213,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'probes':
-            E_rel = erosion.probes(
+            E_rel = probes(
                 v_m=v_m,
                 rho_m=rho_m,
                 D=D,
@@ -226,7 +224,7 @@ def calcRelErosion(erosion_model):
                 )
 
         elif erosion_model == 'flexible':
-            E_rel = erosion.flexible(
+            E_rel = flexible(
                 v_m=v_m,
                 rho_m=rho_m,
                 mu_m=mu_m,
@@ -238,7 +236,7 @@ def calcRelErosion(erosion_model):
                 )
         
         elif erosion_model == 'choke_gallery':
-            E_rel = erosion.choke_gallery(
+            E_rel = choke_gallery(
                 v_m=v_m,
                 rho_m=rho_m,
                 mu_m=mu_m,
@@ -253,7 +251,7 @@ def calcRelErosion(erosion_model):
             )
 
         elif erosion_model == 'nozzlevalve_wall':
-            E_rel = erosion.nozzlevalve_wall(
+            E_rel = nozzlevalve_wall(
                 v_m=v_m,
                 d_p=float(request.form['particle_diameter']),
                 GF=float(request.form['GF']),
