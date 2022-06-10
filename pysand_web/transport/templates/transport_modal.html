@@ -1,4 +1,4 @@
-{% extends "transport/transport.html" %}
+{% extends "transport.html" %}
 {% block modal %}
 <div class="modal" tabindex="-1" id="modal_transport_results">
   <div class="modal-dialog modal-dialog-centered">
@@ -34,8 +34,8 @@
 {{ super() }}
 <script>
     $(document).ready(function(){
-      console.log('window is loaded')
-      $("#modal_erosion_results").modal("show")
+      console.log('modal window is loaded')
+      $("#modal_transport_results").modal("show")
     })
 </script>
 {% endblock %}
