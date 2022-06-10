@@ -6,5 +6,5 @@ app = create_app()
 
 # keep this as is
 if __name__ == '__main__':
-    #app.run()
-    serve(app, host="0.0.0.0", port=5000)
+    app.run()
+    #serve(app, host="0.0.0.0", port=5000)
