@@ -19,4 +19,5 @@ COPY . .
 EXPOSE 5000
 USER 1000
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD [ "python", "app.py" ]
+#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
