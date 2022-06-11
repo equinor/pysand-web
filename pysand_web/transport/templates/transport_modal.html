@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Hello</h3>
+        <h3 class="modal-title">{{ status }}</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,10 +14,10 @@
           {% if transport_model == "stokes" %}
           <p><strong>Critical velocity:</strong> {{ v0 }} m/s</p>
           {% elif transport_model == "hydro" %}
-          <p><strong>Critical velocity for moving dunes:</strong> {{ v0 }} m/s</p>
-          <p><strong>Critical velocity for dispersed particles:</strong> {{ v1 }} m/s</p>
-          <p>{{ warnings }}</p>
+            <p><strong>Critical velocity for moving dunes:</strong> {{ v0 }} m/s</p>
+            <p><strong>Critical velocity for dispersed particles:</strong> {{ v1 }} m/s</p>
           {% endif%}
+          <p>{{ warnings }}</p>
         {% else %}
           <p>Error: {{ error }}</p>
         {% endif %}

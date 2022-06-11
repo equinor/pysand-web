@@ -21,25 +21,25 @@ def calcTransportVelocity(transport_model='hydro'):
     log_stream = StringIO()
     logging.basicConfig(stream=log_stream, level=logging.WARNING)
     error = ''
-    v = []
 
     try:
         if transport_model == 'stokes':
             rho_m = float(request.form['rho_m'])
-            mu_m = float(request.form['mu_m'])
+            mu_m = float(request.form['mu_m'])/1000  # convert to kg/ms
             angle = float(request.form['angle'])
-            v[0] = stokes(rho_m=rho_m, mu_m=mu_m, d_p=d_p, angle=angle, rho_p=rho_p)
-            v[1] = -999
+            v1 = (stokes(rho_m=rho_m, mu_m=mu_m, d_p=d_p, angle=angle, rho_p=rho_p))
+            v2 = -999.0
 
         elif transport_model == 'hydro':
             D = float(request.form['D'])
             rho_l = float(request.form['rho_l'])
-            mu_l = float(request.form['mu_l'])
+            mu_l = float(request.form['mu_l'])/1000  # convert to kg/ms
             e = float(request.form['e'])
-            v[0:2] = hydro(D=D, rho_l=rho_l, mu_l=mu_l, d_p=d_p, e=e, rho_p=rho_p)
+            v1, v2 = hydro(D=D, rho_l=rho_l, mu_l=mu_l, d_p=d_p, e=e, rho_p=rho_p)
         
         else:
-            v = -999
+            v1 = v2 = -999.0
+        
         status = 'Success'
         warning = log_stream.getvalue()
     
@@ -47,11 +47,9 @@ def calcTransportVelocity(transport_model='hydro'):
         status = 'Error'
         warning = None
         error = error
-        v[0:2] = -999
-        return (format(v, '.2E'), status, warning, error)
+        v1 = v2 = -999.0
+        return (format(v1, '.2f'), format(v2, '.2f'), status, warning, error)
 
-    return (format(v[0], '.2E'), format(v[1], '.2E'), status, warning, error)
+    return (format(v1, '.2f'), format(v2, '.2f'), status, warning, error)
    
     
-
-

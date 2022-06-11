@@ -23,3 +23,12 @@ def transportform(transport_model):
 
     return render_template('transport.html', pysand_version=pysand_version, form=form, transport_model=transport_model, model_comment=model_comment, active_page='transport')
 
+# 2 error handling routes
+@transport_bp.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@transport_bp.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
