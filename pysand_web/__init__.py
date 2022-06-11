@@ -13,7 +13,7 @@ def create_app():
         )
 
     csrf = CSRFProtect(app)  # Global csrf protection (https://flask-wtf.readthedocs.io/en/latest/api/#module-flask_wtf.csrf)
-    app.config.from_object('config.DevConfig')
+    app.config.from_object('config.ProdConfig')
     Bootstrap4(app)
 
     with app.app_context():
