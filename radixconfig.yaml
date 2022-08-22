@@ -16,7 +16,7 @@ spec:
          port: 5000
       authentication:
         oauth2:
-          clientId: 63b2d47a-e6dc-4b1e-a503-6f75afe3b4c3
+          clientId: c6191833-2675-484e-a855-da1e5b752749
           scope: openid profile email offline_access
           setXAuthRequestHeaders: true
           setAuthorizationHeader: true
