@@ -1,5 +1,5 @@
 ###### Requirements ######
-pandas == 1.5.0
+pandas == 1.5.2
 numpy == 1.23.4
 scipy == 1.9.2
 pysand == 1.7.8
